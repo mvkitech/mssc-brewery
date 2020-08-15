@@ -9,10 +9,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import lombok.extern.slf4j.Slf4j;
+
 import guru.springframework.msscbrewery.services.BeerService;
 import guru.springframework.msscbrewery.web.model.BeerDto;
 
 @Deprecated
+@Slf4j
 @RequestMapping("/api/v1/beer")
 @RestController
 public class BeerController {
@@ -30,6 +33,7 @@ public class BeerController {
 
     @PostMapping // POST - create new beer
     public ResponseEntity handlePost(@RequestBody @Valid BeerDto beerDto) {
+        log.debug("inside of handlePost()");
         BeerDto savedDto = beerService.saveNewBeer(beerDto);
         HttpHeaders headers = new HttpHeaders();
         //todo add hostname to url
@@ -40,6 +44,7 @@ public class BeerController {
     @PutMapping({"/{beerId}"})
     public ResponseEntity handleUpdate(@PathVariable("beerId") UUID beerId, 
     								   @RequestBody @Valid BeerDto beerDto) {
+        log.debug("inside of handleUpdate()");
         beerService.updateBeer(beerId, beerDto);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
@@ -47,6 +52,7 @@ public class BeerController {
     @DeleteMapping({"/{beerId}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteBeer(@PathVariable("beerId") UUID beerId) {
+        log.debug("inside of deleteBeer()");
         beerService.deleteById(beerId);
     }
 }
